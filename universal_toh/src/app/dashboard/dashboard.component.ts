@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {APP_ID, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
 
@@ -9,8 +9,14 @@ import { HeroService } from '../hero.service';
 })
 export class DashboardComponent implements OnInit {
   heroes: Hero[] = [];
+  platform: any;
+  app: string;
 
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService, @Inject(PLATFORM_ID) private platformId: Object,
+              @Inject(APP_ID) private appId: string) {
+    this.app = this.appId;
+    this.platform = this.platformId.toString();
+  }
 
   ngOnInit() {
     this.getHeroes();

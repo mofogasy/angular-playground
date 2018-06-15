@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, Optional} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, of } from 'rxjs';
@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Hero } from './hero';
 import { MessageService } from './message.service';
+import {APP_BASE_HREF} from "@angular/common";
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -18,7 +19,12 @@ export class HeroService {
 
   constructor(
     private http: HttpClient,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    @Optional() @Inject(APP_BASE_HREF) origin: string) {
+
+    // not necessary since base ref specified in index.html
+    this.heroesUrl = `${origin}${this.heroesUrl}`;
+  }
 
   /** GET heroes from the server */
   getHeroes (): Observable<Hero[]> {

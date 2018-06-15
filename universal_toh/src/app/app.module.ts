@@ -17,7 +17,7 @@ import { MessagesComponent }    from './messages/messages.component';
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({appId: 'tour-of-heroes'}),
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
