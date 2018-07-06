@@ -1,27 +1,24 @@
 # Pwa
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
+PWA demo project
 
-## Development server
+## Build and serve
+ng build --prod
+http-server dist/pwa -p 8001
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Update application
+1) Build application and start web server as described above.
+2) Open localhost:8001
+3) Kill http-server
+4) Make a change, eg. in app.component.html
+5) Build application and start web server as described above.
 
-## Code scaffolding
+### Manual Refresh
+Refresh the page (F5) or close the tab containing the application and open a new one. 
+It will be logged that a new version is available. 
+Refresh a second time and the new version will be displayed.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### CheckForUpdate and ActivateUpdate buttons
+1) Click the CheckForUpdate button. It will be logged that a new version is available.
+2) Click the ActivateUpdate button. It will be logged that the new version is used.
+3) Refresh page or open new tab -> the new version is used

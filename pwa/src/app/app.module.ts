@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { LogComponent } from './logger/log/log.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LogComponent
   ],
   imports: [
     BrowserModule,
