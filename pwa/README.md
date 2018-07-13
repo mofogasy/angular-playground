@@ -5,6 +5,11 @@ PWA demo project
 * ng build --prod
 * http-server dist/pwa -p 8001
 
+### Https to connect from other devices
+* Generation of certificate (only necessary once): openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+  (https://stackoverflow.com/questions/12871565/how-to-create-pem-files-for-https-web-server)
+* http-server dist/pwa -p 8001 --ssl
+
 ## Update application
 1) Build application and start web server as described above.
 2) Open localhost:8001
