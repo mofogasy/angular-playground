@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zones</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.8.26/zone.min.js"></script>
+
+    <script type="text/javascript">
+        function someFunction() {
+            console.log('enter function');
+            setTimeout(function () {
+                console.log('first timeout callback');
+            }, 200);
+            setTimeout(function () {
+                console.log('second timeout callback');
+            }, 0);
+            setTimeout(function () {
+                console.log('third timeout callback');
+                throw new Error('some error');
+            }, 200);
+            console.log('leave function');
+        }
+
+        // for ZoneSpec see https://github.com/angular/zone.js/blob/master/lib/zone.ts
+        window.onload = function () {
+            setTimeout(function () {
+                Zone.current.fork({
+                    name: 'My zone',
+                    onFork: function (delegate, currentZone, targetZone, zoneSpec) {
+                        console.log('onFork - Allows the interception of zone forking');
+                        return targetZone;
+                    },
+                    // onIntercept: function () {
+                    //     console.log('onIntercept - Allows interception of the wrapping of the callback.');
+                    //     return function() {console.log('intercept function')};
+                    // },
+                    // onInvoke: function () {
+                    //     console.log('onInvoke - Allows interception of the callback invocation.');
+                    // },
+                    onHandleError: function () {
+                        console.log('onHandleError - Allows interception of the error handling.');
+                    },
+                    onScheduleTask: function (parent, current, target, task) {
+                        console.log('onScheduleTask - Allows interception of task scheduling.');
+                        parent.scheduleTask(target, task);
+                    },
+                    onInvokeTask: function (parent, current, target, task) {
+                        console.log('onInvokeTask - ...');
+                        parent.invokeTask(target, task);
+                    },
+                    onCancelTask: function () {
+                        console.log('onCancelTask - Allows interception of task cancellation.');
+                    },
+                    onHasTask: function (hasTask) {
+                        console.log('onHasTask - Notifies of changes to the task queue empty status.');
+                        if (hasTask.macroTask) {
+                            console.log("There are outstanding MacroTasks.");
+                        } else {
+                            console.log("All MacroTasks have been completed.");
+                        }
+                    }
+                })
+                    .fork({})  // other fork to invoke onFork callback
+                    .run(someFunction);
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
