@@ -7,6 +7,7 @@
 
     <script type="text/javascript">
         console.log('Zone name (root) ->', Zone.current.name);
+
         function someFunction() {
             console.log('Zone name (inside someFunction) ->', Zone.current.name);
             console.log('enter function');
@@ -65,6 +66,24 @@
                     .fork({})  // other fork to invoke onFork callback
                     .run(someFunction);
             }, 1000);
+
+            setTimeout(function () {
+                console.log('******************************** new stuff *****************************');
+                var z = Zone.current.fork({
+                    name: 'z',
+                    onInvoke(delegate, current, target, callback) {
+                        console.log('entering zone', target.name);
+                        // return delegate.invoke(target, callback);
+                        return target.parent.run(callback); // executed in <root> zone
+                    }
+                });
+
+                function b() {
+                    console.log('function b()', Zone.current.name);
+                }
+
+                z.run(b);
+            }, 2000);
         }
     </script>
 </head>
