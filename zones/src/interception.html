@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zones</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.8.26/zone.min.js"></script>
+
+    <script type="text/javascript">
+        // https://docs.google.com/document/d/1F5Ug0jcrm031vhSMJEOgp1l-Is-Vf0UCNDY-LsQtAIY/edit#
+
+        var timingZone = Zone.current.fork({
+            name: 'timingZone',
+            onInvoke: function (parentZoneDelegate, currentZone, targetZone,
+                                callback, applyThis, applyArgs, source) {
+                var start = performance.now();
+                parentZoneDelegate.invoke(
+                    targetZone, callback, applyThis, applyArgs, source);
+                var end = performance.now();
+                console.log(
+                    'Zone:', targetZone.name,
+                    'Intercepting zone:', currentZone.name,
+                    'Duration:', end - start);
+            }
+        });
+
+        var logZone = timingZone.fork({
+            name: 'logZone',
+            onInvoke: function (parentZoneDelegate, currentZone, targetZone,
+                                callback, applyThis, applyArgs, source) {
+                console.log(
+                    'Zone:', targetZone.name,
+                    'Intercepting zone:', currentZone.name,
+                    'enter');
+                parentZoneDelegate.invoke(
+                    targetZone, callback, applyThis, applyArgs, source);
+                console.log(
+                    'Zone:', targetZone.name,
+                    'Intercepting zone:', currentZone.name,
+                    'leave');
+            }
+        });
+        var appZone = logZone.fork({name: 'appZone'});
+
+        appZone.run(function myApp() {
+            console.log('Zone:', Zone.current.name, 'Hello World!');
+            setTimeout(function() {
+                console.log('Zone:', Zone.current.name, 'Hello World! setTimeout callback');
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
