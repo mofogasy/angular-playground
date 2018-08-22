@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app';
   
-  changeTitle(newTitle: string): void {
-    this.title = newTitle;
+  changeTitle(newTitle: string, toUpperCase: boolean): void {
+    this.title = toUpperCase ? newTitle.toLocaleUpperCase() : newTitle;
   }
 }

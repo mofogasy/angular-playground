@@ -19,7 +19,8 @@
 </ul>
 <div>
   <input #inputField type="text"/>
-  <button type="button" (click)="changeTitle(inputField.value)">Click me!</button>
+  <input #inputCheckbox type="checkbox"/>
+  <button type="button" (click)="changeTitle(inputField.value, inputCheckbox.checked)">Click me!</button>
   <div class="output">{{title}}</div>
 </div>
 
