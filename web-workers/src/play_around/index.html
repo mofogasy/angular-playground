@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Worker</title>
+
+    <script type="text/javascript">
+        let worker = new Worker('worker.js');
+        let cnt = 0;
+        worker.onmessage = function(message) {
+            console.log('Data from worker', message.data);
+            cnt++;
+        };
+
+        const interval = setInterval(function() {
+            worker.postMessage('heey worker!'); // not really deprecated -> https://github.com/Microsoft/TypeScript/blob/master/lib/lib.webworker.d.ts#L2689
+        }, 500);
+
+        setTimeout(function() {
+            clearInterval(interval);
+            worker.terminate();
+            console.log('' + cnt, 'messages received from worker');
+        }, 10000);
+    </script>
+</head>
+<body>
+    <input id="someText" type="text">
+    <button type="button" onclick="console.log('Button clicked', document.getElementById('someText').value)">Click me</button>
+</body>
+</html>
