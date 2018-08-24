@@ -5,10 +5,17 @@
   </h1>
   <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<div>
-  <input #messageInput type="text">
-  <button type="button" (click)="sendMessage(messageInput.value)">Send</button>
-  <button type="button" (click)="terminate()">Terminate</button>
+<h1>Pingpong worker returning the message that is sent to him</h1>
+<p>
+  <input #messageInput type="text">&nbsp;
+  <button type="button" (click)="sendMessage(messageInput.value)">Send</button>&nbsp;
+  <button type="button" (click)="terminate()">Terminate</button>&nbsp;
   <button type="button" (click)="start()">Start</button>
   {{message}}
-</div>
+</p>
+<h1>Other worker that sends a lot of messages back to parent</h1>
+<p>
+  <button type="button" (click)="addOtherWorker()">+</button>&nbsp;
+  <button type="button" (click)="removeOtherWorker()">-</button>&nbsp;
+  {{otherWorkers.length}} other workers running
+</p>
