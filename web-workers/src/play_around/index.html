@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <title>Worker</title>
 
+    <script id="otherWorker" type="javascript/worker">
+        onmessage = function(event) {
+            console.log('Other worker received some message', event.data);
+        };
+        setInterval(() => postMessage(Math.floor(Math.random() * 10000000)), 200);
+    </script>
+
     <script type="text/javascript">
-        let worker = new Worker('worker.js');
+        let blob = new Blob([document.querySelector('#otherWorker').textContent]);
+        let worker = new Worker(window.URL.createObjectURL(blob)); // or 'worker.js' to load from other file
         let cnt = 0;
         worker.onmessage = function(message) {
             console.log('Data from worker', message.data);
