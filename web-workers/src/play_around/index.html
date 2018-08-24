@@ -13,18 +13,21 @@
 
     <script type="text/javascript">
         let blob = new Blob([document.querySelector('#otherWorker').textContent]);
-        let worker = new Worker(window.URL.createObjectURL(blob)); // or 'worker.js' to load from other file
+
+        // Load from file or load inline
+        // let worker = new Worker(window.URL.createObjectURL(blob)); // or 'worker.js' to load from other file
+        let worker = new Worker('worker.js');
+
         let cnt = 0;
-        worker.onmessage = function(message) {
+        worker.addEventListener('message', (message) => {
             console.log('Data from worker', message.data);
             cnt++;
-        };
+        });
 
-        const interval = setInterval(function() {
-            worker.postMessage('heey worker!'); // not really deprecated -> https://github.com/Microsoft/TypeScript/blob/master/lib/lib.webworker.d.ts#L2689
-        }, 500);
+        // not really deprecated -> https://github.com/Microsoft/TypeScript/blob/master/lib/lib.webworker.d.ts#L2689
+        const interval = setInterval(() => worker.postMessage('heey worker!'), 500);
 
-        setTimeout(function() {
+        setTimeout(() => {
             clearInterval(interval);
             worker.terminate();
             console.log('' + cnt, 'messages received from worker');
