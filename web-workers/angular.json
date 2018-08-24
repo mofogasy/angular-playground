@@ -3,6 +3,18 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "my-custom-worker": {
+      "root": "",
+      "projectType": "library",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-webpack:webpack",
+          "options": {
+            "webpackConfig": "my-custom-worker.webpack.config.js"
+          }
+        }
+      }
+    },
     "angular-worker": {
       "root": "",
       "sourceRoot": "src",
@@ -25,7 +37,11 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              {"input": "dist/worker/worker.js",
+                "lazy": true
+              }
+            ]
           },
           "configurations": {
             "production": {

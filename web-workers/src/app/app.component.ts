@@ -8,10 +8,13 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'app';
   worker: Worker;
+  otherWorker: Worker;
   message: string;
 
   constructor() {
     this.start();
+    this.otherWorker = new Worker('worker.js');
+    this.otherWorker.addEventListener('message', message => console.log('Message from other worker', message.data));
   }
 
   sendMessage(message): void {
