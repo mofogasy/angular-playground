@@ -5,7 +5,7 @@ function component() {
 
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
 
-    setTimeout(() => console.log('Arrow function call works'));
+    setTimeout(() => console.log('Arrow function call works!'));
 
     return element;
 }
