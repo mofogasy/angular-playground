@@ -9,6 +9,12 @@ module.exports = {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist')
     },
+    resolveLoader: {
+        modules: [
+            'node_modules',
+            path.resolve(__dirname, 'src/loaders')
+        ]
+    },
     module: {
         rules: [
             {
@@ -17,6 +23,14 @@ module.exports = {
                     {
                         loader: "html-loader",
                         options: {minimize: true}
+                    }
+                ]
+            },
+            {
+                test: /\.txt/,
+                use: [
+                    {
+                        loader: "txt-loader"
                     }
                 ]
             }
