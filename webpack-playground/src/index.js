@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import someText from './texts/some.txt';
 import './style.css';
+import Sifaka from './jumping_sifaka.jpg';
 
 function component() {
     let element = document.createElement('div');
@@ -17,5 +18,12 @@ function text() {
     return element;
 }
 
+function image() {
+    let image = new Image();
+    image.src = Sifaka;
+    return image;
+}
+
 document.body.appendChild(component());
 document.body.appendChild(text());
+document.body.appendChild(image());

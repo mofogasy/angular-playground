@@ -2,4 +2,6 @@
     border: 2px solid red;
     font-weight: bold;
     color: blue;
+    background: url('./jumping_sifaka.jpg');
+    height: 250px;
 }
