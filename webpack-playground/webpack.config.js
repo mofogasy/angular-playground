@@ -34,7 +34,8 @@ module.exports = {
                         loader: "txt-loader"
                     }
                 ]
-            }
+            },
+            { test: /\.js$/, exclude: /node_modules/, loader: "babel-loader" }
         ]
     },
     plugins: [
