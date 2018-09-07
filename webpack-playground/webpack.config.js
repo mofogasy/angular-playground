@@ -2,10 +2,10 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-module.exports = {
+const config = {
     entry: {
         main: './src/index.js',
-        print: './src/print.js'
+        myPrint: './src/print.js'
     },
     output: {
         filename: '[name].js',
@@ -49,4 +49,11 @@ module.exports = {
             path: path.resolve(__dirname, 'dist')
         })
     ]
+};
+
+module.exports = (env, argv) => {
+    if (argv.mode === 'development') {
+        config.devtool = 'inline-source-map';
+    }
+    return config;
 };
