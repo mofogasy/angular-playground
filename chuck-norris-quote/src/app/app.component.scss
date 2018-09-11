@@ -1,0 +1,23 @@
+img {
+  opacity: 0.2;
+}
+
+.quote {
+  width: 650px;
+  border: 2px solid orangered;
+  margin: auto;
+  padding: 0 25px 10px 25px;
+
+  span {
+    font-style: italic;
+
+    &.url {
+      color: orangered;
+      font-style: normal;
+    }
+  }
+
+  button {
+    margin-top: 10px;
+  }
+}
