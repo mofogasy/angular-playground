@@ -1,0 +1,18 @@
+:host {
+  > div.outer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid darkgoldenrod;
+
+    > div.inner {
+      border: 2px solid darkred;
+      width: 300px;
+      height: 200px;
+    }
+
+    > div.centered {
+
+    }
+  }
+}
