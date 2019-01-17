@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { ChuckNorrisQuoteService } from './chuck-norris-quote.service';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +9,10 @@ import {HttpClient} from '@angular/common/http';
 export class AppComponent {
   quote = 'Click the button to load a random quote!';
 
-  constructor(private http: HttpClient) {
+  constructor(private chuckNorrisQuote: ChuckNorrisQuoteService) {
   }
 
   getRandomQuote(): void {
-    this.http.get<any>('http://api.icndb.com/jokes/random').subscribe(result => this.quote = result.value.joke);
+    this.chuckNorrisQuote.getRandomQuote().subscribe(quote => this.quote = quote);
   }
 }
