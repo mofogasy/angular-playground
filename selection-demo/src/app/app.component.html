@@ -1,0 +1,15 @@
+<div>
+  <h1>SSP Demo</h1>
+  <p>
+    In the below canvas you find a moving mob.
+  </p>
+  <p>
+    <button type="button" (click)="showProduktionsvorgaben()">Produktionsvorgaben</button>
+  </p>
+  <app-ssp></app-ssp>
+</div>
+<app-speed-info *ngIf="displayFlags.showSpeed"></app-speed-info>
+<app-mob-info *ngIf="displayFlags.showMobInfo"></app-mob-info>
+<app-lenkereignis-info *ngIf="displayFlags.showLenkereignisInfo"></app-lenkereignis-info>
+<app-produktionsvorgabe *ngIf="displayFlags.showProduktionsvorgaben"></app-produktionsvorgabe>
+

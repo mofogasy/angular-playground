@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+
+  app-speed-info, app-mob-info, app-lenkereignis-info {
+    flex: auto;
+    border: 1px solid black;
+    margin-left: 10px;
+  }
+}
