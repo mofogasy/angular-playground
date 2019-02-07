@@ -15,7 +15,7 @@ export class MobInfoComponent implements OnDestroy {
   constructor(private _mobService: MobService) {
     this._mobService.mobInfo
       .pipe(
-        tap(mob => console.log('mob info', mob)),
+        // tap(mob => console.log('mob info', mob)),
         takeUntil(this._destroy$)
       )
       .subscribe(mob => this.mob = mob);

@@ -84,8 +84,7 @@ export class MessagingService implements OnDestroy {
 
 export function generateLenkereignis(c: string): any[] {
   const leList = [];
-  const nbr = Math.floor(Math.random() * 10) + 1;
-  for (let i = 0; i < nbr; i++) {
+  for (let i = 0; i < 10; i++) {
     const x = Math.floor(Math.random() * 790);
     const y = Math.floor(Math.random() * 390);
     leList.push({id: `le${i}`, x, y, w: 10, h: 10, c});

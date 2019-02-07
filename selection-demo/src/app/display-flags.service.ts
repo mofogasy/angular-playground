@@ -33,10 +33,10 @@ export class DisplayFlagsService {
     this._showProduktionsvorgaben = false;
   }
 
-  showHideLenkereignisInfo() {
-    this._showSpeed = false;
+  showHideLenkereignisInfo(force?: boolean) {
+    this._showSpeed = force !== undefined ? force : !this._showSpeed;
     this._showMobInfo = false;
-    this._showLenkereignisInfo = !this._showLenkereignisInfo;
+    this._showLenkereignisInfo = force !== undefined ? force : !this._showLenkereignisInfo;
     this._showProduktionsvorgaben = false;
   }
 

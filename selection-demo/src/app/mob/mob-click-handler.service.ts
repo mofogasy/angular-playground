@@ -23,4 +23,8 @@ export class MobClickHandlerService implements ClickHandler {
     console.log('mob click teardown');
     this._displayFlags.showHideMobInfo(false);
   }
+
+  isPropagatingSelection(): boolean {
+    return true;
+  }
 }
