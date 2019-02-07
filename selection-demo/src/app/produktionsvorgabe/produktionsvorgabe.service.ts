@@ -9,8 +9,6 @@ import { map } from 'rxjs/operators';
 })
 export class ProduktionsvorgabeService {
 
-  private _pv$: Subject<any> = new Subject();
-
   constructor(private _mobService: MobService, private _selectionDispatcher: SelectionDispatcherService) { }
 
   selectPv(pv: string) {

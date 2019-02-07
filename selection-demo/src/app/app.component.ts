@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MobRendererService } from './mob/mob-renderer.service';
 import { DisplayFlagsService } from './display-flags.service';
 import { ProduktionsvorgabeRendererService } from './produktionsvorgabe/produktionsvorgabe-renderer.service';
+import { LenkereignisRendererService } from './lenkereignis-info/lenkereignis-renderer.service';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent {
   // Inject here to trigger DI
   constructor(private _mobRenderer: MobRendererService,
               private _pvRenderer: ProduktionsvorgabeRendererService,
+              private _leRenderer: LenkereignisRendererService,
               public displayFlags: DisplayFlagsService) {
   }
 

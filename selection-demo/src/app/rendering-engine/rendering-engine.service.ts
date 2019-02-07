@@ -57,10 +57,18 @@ export class RenderingEngineService {
     }
   }
 
-  removeElement(elementId: string) {
+  public removeElement(elementId: string) {
     const index = this._elements.findIndex(e => e.id === elementId);
     if (index !== -1) {
       this._elements.splice(index, 1);
     }
+  }
+
+  public addElements(lenkereignisse: any[]) {
+    lenkereignisse.forEach(le => this.addElement(le));
+  }
+
+  public removeElements(id: string) {
+    this._elements = this._elements.filter(element => !element.id.startsWith(id));
   }
 }

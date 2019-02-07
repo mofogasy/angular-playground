@@ -9,7 +9,9 @@ export class MessagingService implements OnDestroy {
   private _mobs$: Subject<any> = new Subject();
   private _mobInfo$: Subject<any> = new Subject();
   private _speed$: Subject<any> = new Subject();
+  private _lenkereignis$: Subject<any> = new Subject();
   private readonly _intervalId: number;
+  private _leIntervalId: number;
   private _mob1Wrapper = {mob: {id: 'mob1', x: 10, y: 10, w: 25, h: 25, s: 0}, right: true, down: true};
   private _mob2Wrapper = {mob: {id: 'mob2', x: 500, y: 330, w: 25, h: 25, s: 0}, right: false, down: false};
   private _selectedMobId: string;
@@ -56,6 +58,10 @@ export class MessagingService implements OnDestroy {
     return this._speed$.asObservable();
   }
 
+  get lenkereignis(): Observable<any> {
+    return this._lenkereignis$.asObservable();
+  }
+
   subscribeToMobInfo(id: string): void {
     this._selectedMobId = id;
   }
@@ -63,6 +69,28 @@ export class MessagingService implements OnDestroy {
   unsubscribeFromMobInfo() {
     this._selectedMobId = null;
   }
+
+  subscribeToLenkereignis(id: string): void {
+    const color = id === 'mob1' ? '#f4bc42' : '#41bbf4';
+    this._leIntervalId = setInterval(() => this._lenkereignis$.next(generateLenkereignis(color))
+      , 5000);
+  }
+
+  unsubscribeFromLenkereignis(): void {
+    clearInterval(this._leIntervalId);
+    this._lenkereignis$.next(null);
+  }
+}
+
+export function generateLenkereignis(c: string): any[] {
+  const leList = [];
+  const nbr = Math.floor(Math.random() * 10) + 1;
+  for (let i = 0; i < nbr; i++) {
+    const x = Math.floor(Math.random() * 790);
+    const y = Math.floor(Math.random() * 390);
+    leList.push({id: `le${i}`, x, y, w: 10, h: 10, c});
+  }
+  return leList;
 }
 
 function moveObject(mob: any, right: boolean, down: boolean): any {
