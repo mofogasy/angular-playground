@@ -14,7 +14,7 @@ export class SpeedInfoComponent implements OnDestroy {
 
   constructor(private _speed: SpeedService) {
     this._speed.speed.pipe(
-      // tap(speed => console.log('speed', speed)),
+      tap(speed => console.log('speed', speed)),
       takeUntil(this._destroy$)
     ).subscribe(speed => this.speed = speed);
   }
