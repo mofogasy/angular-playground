@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MobService } from '../mob/mob.service';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { LenkereignisMsgHandlerService } from './lenkereignis-msg-handler.service';
-import { generateLenkereignis } from '../messaging/messaging.service';
 import { LenkereignisClickHandlerService } from './lenkereignis-click-handler.service';
 import { filter, map } from 'rxjs/operators';
 
@@ -21,11 +20,11 @@ export class LenkereignisService {
     this._leMsgHandler.le.subscribe(this._le$);
 
     this._mobService.selectedMob.subscribe(mob => {
-      this._leMsgHandler.subscribeToLE(mob);
+      const leList = this._leMsgHandler.subscribeToLE(mob);
 
       // simulate initial load of lenkereignisse
-      if (mob) {
-        this._le$.next(generateLenkereignis('#000'));
+      if (leList) {
+        this._le$.next(leList);
       }
     });
 

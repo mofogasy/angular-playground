@@ -70,10 +70,12 @@ export class MessagingService implements OnDestroy {
     this._selectedMobId = null;
   }
 
-  subscribeToLenkereignis(id: string): void {
+  subscribeToLenkereignis(id: string): any[] {
     const color = id === 'mob1' ? '#f4bc42' : '#41bbf4';
-    this._leIntervalId = setInterval(() => this._lenkereignis$.next(generateLenkereignis(color))
-      , 5000);
+    const leList = generateLenkereignis(color);
+    this._leIntervalId = setInterval(() => this._lenkereignis$.next(updateLenkereignisse(leList))
+      , 2000);
+    return leList;
   }
 
   unsubscribeFromLenkereignis(): void {
@@ -82,7 +84,7 @@ export class MessagingService implements OnDestroy {
   }
 }
 
-export function generateLenkereignis(c: string): any[] {
+function generateLenkereignis(c: string): any[] {
   const leList = [];
   for (let i = 0; i < 10; i++) {
     const x = Math.floor(Math.random() * 790);
@@ -90,6 +92,24 @@ export function generateLenkereignis(c: string): any[] {
     leList.push({id: `le${i}`, x, y, w: 10, h: 10, c});
   }
   return leList;
+}
+
+function updateLenkereignisse(leList: any[]): any[] {
+  leList.forEach(le => le.c = getRandomColor());
+  return leList;
+}
+
+function getRandomColor(): string {
+  const rand = Math.random();
+
+  if (rand <= 0.25) {
+    return '#f4bc42';
+  } else if (rand <= 0.5) {
+    return '#41bbf4';
+  } else if (rand <= 0.75) {
+    return '#fc3753';
+  }
+  return '#63ff47';
 }
 
 function moveObject(mob: any, right: boolean, down: boolean): any {

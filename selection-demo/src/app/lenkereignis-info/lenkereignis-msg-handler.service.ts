@@ -13,11 +13,12 @@ export class LenkereignisMsgHandlerService {
     return this._messaging.lenkereignis;
   }
 
-  subscribeToLE(mob: any): void {
+  subscribeToLE(mob: any): any[] {
     if (mob) {
-      this._messaging.subscribeToLenkereignis(mob.id);
+      return this._messaging.subscribeToLenkereignis(mob.id);
     } else {
       this._messaging.unsubscribeFromLenkereignis();
     }
+    return null;
   }
 }
