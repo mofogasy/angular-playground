@@ -2,10 +2,16 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
+/**
+ * Normally, this class would receive data from a source, e.g. MQTT and dispatch it to the subscribed
+ * handlers. For simplicity the handlers just subscribe to the different subjects directly. In a real
+ * implementation, the MessageDispatcherService should not know the different topics / subjects but rather
+ * subscribe to them dynamically.
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class MessagingService implements OnDestroy {
+export class MessageDispatcherService implements OnDestroy {
   private _mobs$: Subject<any> = new Subject();
   private _mobInfo$: Subject<any> = new Subject();
   private _speed$: Subject<any> = new Subject();
@@ -25,6 +31,7 @@ export class MessagingService implements OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this._intervalId);
+    clearInterval(this._leIntervalId);
   }
 
   private moveMobs(): void {

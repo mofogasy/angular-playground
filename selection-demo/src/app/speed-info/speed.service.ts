@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MobService } from '../mob/mob.service';
-import { SpeedHandlerService } from './speed-handler.service';
+import { SpeedMsgHandlerService } from './speed-msg-handler.service';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import { distinctUntilChanged, filter, map, withLatestFrom } from 'rxjs/operator
 })
 export class SpeedService {
 
-  constructor(private _mobService: MobService, private _speedHandler: SpeedHandlerService) { }
+  constructor(private _mobService: MobService, private _speedHandler: SpeedMsgHandlerService) { }
 
   public get speed(): Observable<any> {
     return this._speedHandler.speed.pipe(

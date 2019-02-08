@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MessagingService } from '../messaging/messaging.service';
+import { MessageDispatcherService } from '../messaging/message-dispatcher.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class LenkereignisMsgHandlerService {
 
-  constructor(private _messaging: MessagingService) { }
+  constructor(private _messaging: MessageDispatcherService) { }
 
   public get le(): Observable<any> {
     return this._messaging.lenkereignis;

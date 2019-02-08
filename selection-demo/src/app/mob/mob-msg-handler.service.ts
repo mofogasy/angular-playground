@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MessagingService } from '../messaging/messaging.service';
+import { MessageDispatcherService } from '../messaging/message-dispatcher.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MobMsgHandlerService {
 
-  constructor(private _messaging: MessagingService) {
+  constructor(private _messaging: MessageDispatcherService) {
   }
 
   get mobs(): Observable<any> {
