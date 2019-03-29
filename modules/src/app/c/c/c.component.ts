@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AService } from '../../a/a.service';
+import { CService } from '../c.service';
 
 @Component({
   selector: 'app-c',
@@ -8,10 +9,10 @@ import { AService } from '../../a/a.service';
 })
 export class CComponent implements OnInit {
 
-  public id: number;
+  public id: string;
 
-  constructor(private _aService: AService) {
-    this.id = this._aService.id;
+  constructor(private _aService: AService, private _cService: CService) {
+    this.id = this._aService.id + ' ' + !!this._cService;
   }
 
   ngOnInit() {

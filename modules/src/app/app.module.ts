@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { BModule } from './b/b.module';
-import { CModule } from './c/c.module';
 
 @NgModule({
   declarations: [
@@ -11,8 +11,10 @@ import { CModule } from './c/c.module';
   ],
   imports: [
     BrowserModule,
-    BModule,
-    CModule
+    RouterModule.forRoot([
+      {path: 'component-c', loadChildren: './c/c.module#CModule'}
+    ]),
+    BModule
   ],
   providers: [],
   bootstrap: [AppComponent]
