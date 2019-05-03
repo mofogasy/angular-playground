@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import '~@scion/workbench/theming';
 @import url('https://fonts.googleapis.com/css?family=Roboto:normal,bold,italic,bolditalic');
-
-@include wb-theme();
 
 body {
   font-family: Roboto, Arial, sans-serif;
