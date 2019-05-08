@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -22,8 +22,8 @@ export class MessageDispatcherService implements OnDestroy {
   private _mob2Wrapper = {mob: {id: 'mob2', x: 500, y: 330, w: 25, h: 25, s: 0}, right: false, down: false};
   private _selectedMobId: string;
 
-  constructor() {
-    this._intervalId = setInterval(() => this.moveMobs(), 100);
+  constructor(private _ngZone: NgZone) {
+    this._ngZone.runOutsideAngular(() => setInterval(() => this.moveMobs(), 100));
     this._mobs$.next(this._mob1Wrapper.mob);
     this._mobs$.next(this._mob2Wrapper.mob);
     this._mobs$.subscribe(this._mobInfo$);
@@ -45,8 +45,10 @@ export class MessageDispatcherService implements OnDestroy {
 
     const mob = Object.assign({}, mobWrapper.mob); // Simulate a new object, otherwise reference is used in handlers
 
-    this._speed$.next({mobId: mob.id, s: mob.s});
-    this._mobs$.next(mob);
+    this._ngZone.run(() => {
+      this._speed$.next({mobId: mob.id, s: mob.s});
+      this._mobs$.next(mob);
+    });
 
     return mobWrapper;
   }
@@ -80,8 +82,12 @@ export class MessageDispatcherService implements OnDestroy {
   subscribeToLenkereignis(id: string): any[] {
     const color = id === 'mob1' ? '#f4bc42' : '#41bbf4';
     const leList = generateLenkereignis(color);
-    this._leIntervalId = setInterval(() => this._lenkereignis$.next(updateLenkereignisse(leList))
-      , 2000);
+
+    this._ngZone.runOutsideAngular(() => {
+      this._leIntervalId = setInterval(() => this._ngZone.run(() => this._lenkereignis$.next(updateLenkereignisse(leList)))
+        , 2000);
+    });
+
     return leList;
   }
 

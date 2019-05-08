@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ClickDispatcherService } from './click-dispatcher.service';
 
 @Injectable({
@@ -10,25 +10,27 @@ export class RenderingEngineService {
   private _context: any;
   private _elements: any[] = [];
 
-  constructor(private _clickDispatcher: ClickDispatcherService) {
-    setInterval(() => {
-      this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-      this._elements.forEach(element => {
-        if (element.id === 'line') {
-          this._context.beginPath();
-          let point = element.points[0];
-          this._context.moveTo(point.x, point.y);
-          for (let i = 1; i < element.points.length; i++) {
-            point = element.points[i];
-            this._context.lineTo(point.x, point.y);
+  constructor(private _clickDispatcher: ClickDispatcherService, private _ngZone: NgZone) {
+    this._ngZone.runOutsideAngular(() => {
+      setInterval(() => {
+        this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        this._elements.forEach(element => {
+          if (element.id === 'line') {
+            this._context.beginPath();
+            let point = element.points[0];
+            this._context.moveTo(point.x, point.y);
+            for (let i = 1; i < element.points.length; i++) {
+              point = element.points[i];
+              this._context.lineTo(point.x, point.y);
+            }
+            this._context.stroke();
+          } else {
+            this._context.fillStyle = element.c;
+            this._context.fillRect(element.x, element.y, element.w, element.h);
           }
-          this._context.stroke();
-        } else {
-          this._context.fillStyle = element.c;
-          this._context.fillRect(element.x, element.y, element.w, element.h);
-        }
-      });
-    }, 50);
+        });
+      }, 50);
+    });
   }
 
   set canvas(canvas: any) {
