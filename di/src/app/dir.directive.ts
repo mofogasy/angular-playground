@@ -1,4 +1,4 @@
-import { Directive, Host, SkipSelf } from '@angular/core';
+import { Directive, ElementRef, Host, Optional, SkipSelf } from '@angular/core';
 import { VALUE, ValueService } from './value.service';
 
 @Directive({
@@ -22,7 +22,16 @@ export class DirDirective {
 
   /*
    * Error will be thrown, unless @Optional is added
+   *
+   * Check the 3 different usages:
+   *    - <span appDir>
+   *    - <app-d appDir>
+   *    - <div appDir>
    */
-  // constructor(@Host() @SkipSelf() private valueService: ValueService) { }
+  constructor(@Optional() @Host() @SkipSelf() private valueService: ValueService,
+              private elRef: ElementRef) {
+
+    console.log(elRef.nativeElement.nodeName, valueService ? valueService.value : 'ValueService is null');
+  }
 
 }

@@ -1,5 +1,18 @@
 <h2>A</h2>
 <span>Value: {{valueService.value}}</span>
 <ng-content></ng-content>
-<app-c></app-c>
-<app-d appDir></app-d>
+<app-c>
+  <!--
+    Span is the host of appDir. Together, they are hosted by
+    app-c. The directives constructor with @Optional() @Host() @SkipSelf()
+    will get the CComponent's ValueService
+  -->
+  <span appDir></span>
+</app-c>
+<app-d appDir>
+  <a appDir></a>
+</app-d>
+<app-b>
+  <div appDir></div>
+</app-b>
+
