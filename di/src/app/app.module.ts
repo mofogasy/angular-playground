@@ -8,15 +8,19 @@ import { CComponent } from './c/c.component';
 import { VALUE, ValueService } from './value.service';
 import { DComponent } from './d/d.component';
 import { DirDirective } from './dir.directive';
+import { EComponent } from './e/e.component';
+import { FComponent } from './f/f.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DirDirective,
     AComponent,
     BComponent,
     CComponent,
     DComponent,
-    DirDirective
+    EComponent,
+    FComponent
   ],
   imports: [
     BrowserModule
