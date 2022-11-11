@@ -1,0 +1,13 @@
+<h1>{{title}}</h1>
+<ng-container *ngIf="quote; else loading">
+  <blockquote>
+    <p>{{quote.content}}</p>
+  </blockquote>
+  <figcaption>- {{quote.author}}</figcaption>
+  <div class="tags">
+    <span *ngFor="let tag of quote.tags">{{tag}}</span>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <span>Loading quote...</span>
+</ng-template>

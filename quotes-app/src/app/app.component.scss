@@ -1,0 +1,40 @@
+:host {
+  font-family: Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  > blockquote {
+    margin: 0;
+
+    > p {
+      font-family: "Lucida Handwriting", serif;
+      font-size: 1.5em;
+      padding: 15px;
+      background: #eee;
+      border-radius: 5px;
+
+      &::before {
+        content: '\201C';
+      }
+
+      &::after {
+        content: '\201D';
+      }
+    }
+  }
+
+  > figcaption {
+    font-size: 1em;
+  }
+
+  > div.tags {
+    margin-top: 1em;
+    > span {
+      border: 1px solid #336699;
+      border-radius: 5px;
+      margin: 5px;
+      padding: 5px;
+      background-color: lightblue;
+    }
+  }
+}
