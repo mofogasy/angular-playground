@@ -1,0 +1,226 @@
+<!--
+  ~ Copyright (c) 2018-2022 Swiss Federal Railways
+  ~
+  ~ This program and the accompanying materials are made
+  ~ available under the terms of the Eclipse Public License 2.0
+  ~ which is available at https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DnD PoC</title>
+  <style>
+    body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: 0;
+    }
+
+    div.zone {
+      background-color: #66BB6A;
+      display: flex;
+      flex: 1 0 auto;
+      flex-direction: column;
+    }
+
+    div.tabbar {
+      background-color: orange;
+      border: 1px solid darkorange;
+      display: flex;
+    }
+
+    div.tab {
+      background-color: #ff3f33;
+      border: 1px solid darkred;
+      width: 100px;
+      height: 50px;
+      text-align: center;
+    }
+
+    div.tab.drag-source {
+      display: none;
+    }
+
+    div.tab:has(~ div.tab.drop-target),
+    div.tab.drag-source:not(.initial) ~ div.tab:not(:has(div.tab.drop-target)),
+    div.tab:has(+ div.tab.drag-source:last-child) {
+      transition: transform 175ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    div.tab.drop-target, div.tab.drop-target ~ div.tab {
+      transform: translateX(102px);
+      transition: transform 175ms cubic-bezier(0, 0, 0.2, 1);
+      // background-color: cornflowerblue;
+      // transition: background-color 2s;
+    }
+
+    div.tab.drag-source.initial + div.tab.drop-target, div.tab.drag-source.initial + div.tab.drop-target ~ div.tab {
+      // background-color: limegreen;
+      transition: none;
+    }
+
+    div.main {
+      background-color: darkgrey;
+      border: 1px solid dimgrey;
+      flex-grow: 1;
+      text-align: center;
+    }
+  </style>
+  <script type="text/javascript">
+    let dragSource = {};
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabs();
+      initTabbar();
+      initContent();
+    });
+
+    function initTabs() {
+      const tabs = document.querySelectorAll('div.tab');
+
+      tabs.forEach(tab => tab.addEventListener('dragstart', (event) => {
+        console.log('dragstart');
+        event.dataTransfer.setData('text/plain', tab.id);
+        event.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => {
+          dragSource = {
+            rect: tab.getBoundingClientRect(),
+            offset: event.offsetX,
+          };
+          tab.classList.add('drag-source');
+          tab.classList.add('initial');
+          const rightSibling = tab.nextElementSibling;
+          if (rightSibling) {
+            rightSibling.classList.add('drop-target');
+          }
+        }, 0);
+      }));
+
+      tabs.forEach(tab => tab.addEventListener('dragend', (event) => {
+        tab.classList.remove('drag-source');
+        document.querySelector('div.tab.drop-target')?.classList.remove('drop-target');
+      }));
+    }
+
+    function initTabbar() {
+      const tabbars = document.querySelectorAll('div.tabbar');
+
+      tabbars.forEach(tabbar => tabbar.addEventListener('dragenter', (event) => {
+        console.log('dragenter');
+      }));
+
+      tabbars.forEach(tabbar => tabbar.addEventListener('dragover', (event) => {
+        console.log('dragover');
+        event.preventDefault();
+        document.querySelector('div.drag-source.initial')?.classList.remove('initial');
+
+        const currentDropTarget = tabbar.querySelector('div.tab.drop-target');
+        const transformationComplete = currentDropTarget === null ||
+            getComputedStyle(currentDropTarget).getPropertyValue('transform').split(', ').at(4) === '102';
+
+        if (!transformationComplete) {
+          return;
+        }
+
+        const tabs = tabbar.querySelectorAll('div.tab:not(.drag-source)');
+        const left = event.clientX - dragSource.offset;
+        const right = left + dragSource.rect.width;
+        let dropTargetFound = false;
+        for (let i=0; i<tabs.length; i++) {
+          const tab = tabs.item(i);
+          const tabRect = tab.getBoundingClientRect();
+          if (tabRect.x + (tabRect.width / 2) > left) {
+            if (tab.classList.contains('drop-target') && tabRect.x + (tabRect.width / 2) < right) {
+              continue;
+            }
+            let allTransitionsCompleted = true;
+            for (let y=0; y<tabs.length; y++) {
+              const aaa = tabs.item(y);
+              if (aaa === currentDropTarget) {
+                break;
+              }
+              const transform = getComputedStyle(aaa).getPropertyValue('transform').split(', ').at(4);
+              allTransitionsCompleted &&= transform === undefined;
+            }
+            if (!tab.classList.contains('drop-target') && allTransitionsCompleted) {
+              console.log('change drop target', currentDropTarget?.id, tab.id);
+              currentDropTarget?.classList.remove('drop-target');
+              tab.classList.add('drop-target');
+            }
+            dropTargetFound = true;
+            break;
+          }
+        }
+        if (!dropTargetFound) {
+          currentDropTarget?.classList.remove('drop-target');
+        }
+      }));
+
+      tabbars.forEach(tabbar => tabbar.addEventListener('dragleave', (event) => {
+      }));
+
+      tabbars.forEach(tabbar => tabbar.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const tabId = event.dataTransfer.getData('text/plain');
+        const tab = document.getElementById(tabId);
+        tab.parentNode.removeChild(tab);
+        const dropTarget = tabbar.querySelector('div.tab.drop-target');
+        if (dropTarget) {
+          dropTarget.before(tab);
+        } else {
+          tabbar.querySelector('div.tab:last-child').after(tab);
+        }
+      }));
+    }
+
+    function initContent() {
+      const mains = document.querySelectorAll('div.main');
+
+      mains.forEach(main => main.addEventListener('dragenter', (event) => {
+        event.preventDefault();
+        document.querySelector('div.drop-target')?.classList.remove('drop-target');
+      }));
+
+      mains.forEach(main => main.addEventListener('dragover', (event) => {
+        event.preventDefault();
+      }));
+
+      mains.forEach(main => main.addEventListener('dragleave', (event) => {
+        event.preventDefault();
+      }));
+    }
+  </script>
+</head>
+<body>
+<div class="zone">
+  <div class="tabbar">
+    <div id="tab1" class="tab" draggable="true">Tab 1</div>
+    <div id="tab2" class="tab" draggable="true">Tab 2</div>
+    <div id="tab3" class="tab" draggable="true">Tab 3</div>
+    <div id="tab3b" class="tab" draggable="true">Tab 3b</div>
+    <div id="tab3c" class="tab" draggable="true">Tab 3c</div>
+    <div id="tab3d" class="tab" draggable="true">Tab 3d</div>
+  </div>
+  <div class="main">Content</div>
+</div>
+<div class="zone">
+  <div class="tabbar">
+    <div id="tab4" class="tab" draggable="true">Tab 4</div>
+    <div id="tab5" class="tab" draggable="true">Tab 5</div>
+    <div id="tab6" class="tab" draggable="true">Tab 6</div>
+    <div id="tab7" class="tab" draggable="true">Tab 7</div>
+    <div id="tab8" class="tab" draggable="true">Tab 8</div>
+    <div id="tab9" class="tab" draggable="true">Tab 9</div>
+  </div>
+  <div class="main">Content</div>
+</div>
+</body>
+</html>
